@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import Layout from '../components/Layouts';
+import Layout from '../components/Layout';
 import PokemanModal from '../components/PokemanModal';
 
 export default function Home({ pokemon }) {
@@ -18,7 +18,7 @@ export default function Home({ pokemon }) {
         {pokemon.map((pokeman, index) => (
           <li key={index}>
             <Link href={`/?id=${index + 1}`} as={`/pokemon/${index + 1}`} scroll={false}>
-              <a className="flex items-center p-4 my-2 text-lg capitalize bg-gray-200 border border-grey hover:shadow-md rounded-md">
+              <a className="flex items-center p-4 my-2 text-lg capitalize bg-gray-200 border rounded-md border-grey hover:shadow-md">
                 <img src={pokeman.image} alt={pokeman.name} className="w-20 h-20 mr-3" />
                 <span className="mr-2 font-bold">{index + 1}.</span>
                 {pokeman.name}

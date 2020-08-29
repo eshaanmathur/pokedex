@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import Layout from '../../components/Layouts';
+import Layout from '../../components/Layout';
 import Link from 'next/link';
 import Pokeman from '../../components/Pokeman';
 
