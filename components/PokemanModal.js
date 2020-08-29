@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import useLockBodyScroll from '../hook/useLockBodyScroll';
 import Loading from './Loading';
 import Pokeman from './Pokeman';
-import useLockBodyScroll from '../hook/useLockBodyScroll';
 
 function useFetchPokeman(id) {
   const [loading, setLoading] = useState(true);

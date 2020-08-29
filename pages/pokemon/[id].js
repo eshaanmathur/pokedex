@@ -1,6 +1,5 @@
-import { useRouter } from 'next/router';
-import Layout from '../../components/Layout';
 import Link from 'next/link';
+import Layout from '../../components/Layout';
 import Pokeman from '../../components/Pokeman';
 
 export default function PokemonPage({ pokeman }) {

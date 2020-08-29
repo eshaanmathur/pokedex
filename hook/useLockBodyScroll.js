@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 
 export default function useLockBodyScroll() {
   useLayoutEffect(() => {
