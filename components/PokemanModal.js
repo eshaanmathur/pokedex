@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Loading from './Loading';
 import Pokeman from './Pokeman';
+import useLockBodyScroll from '../hook/useLockBodyScroll';
 
 function useFetchPokeman(id) {
   const [loading, setLoading] = useState(true);
@@ -37,6 +38,7 @@ function ModalWrapper({ children }) {
 
 export default function PokemanModal({ id, handelClose }) {
   const { data, loading } = useFetchPokeman(id);
+  useLockBodyScroll();
   if (loading) {
     return (
       <ModalWrapper>
