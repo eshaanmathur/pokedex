@@ -63,8 +63,8 @@ const PokemanModal: FC<Props> = ({ id, handelClose }) => {
           <button className="py-4 text-sm font-bold text-gray-100 uppercase" onClick={handelClose}>
             [x] close
         </button>
-          <div className="flex items-center justify-center max-w-xl py-20 bg-gray-100">
-            <p>No Data found</p>
+          <div className="flex items-center justify-center py-20 bg-gray-100 rounded">
+            <p className="font-bold text-gray-700">No Data found</p>
           </div>
         </div>
       </ModalWrapper>
