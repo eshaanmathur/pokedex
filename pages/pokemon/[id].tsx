@@ -1,11 +1,15 @@
 import Link from 'next/link';
 import Layout from 'components/Layout';
 import Pokeman from 'components/Pokeman';
-import PropTypes from 'prop-types';
+import { GetStaticProps } from 'next';
+import { PokemonApiRespone, PokemonData } from 'types';
 
-function PokemonPage({ pokeman }) {
+interface Props {
+  pokeman: PokemonData;
+}
+function PokemonPage({ pokeman }: Props) {
   return (
-    <Layout>
+    <Layout title={pokeman.name}>
       <Pokeman pokeman={pokeman} />
       <p className="mt-10 text-center">
         <Link href="/">
@@ -15,20 +19,6 @@ function PokemonPage({ pokeman }) {
     </Layout>
   );
 }
-
-PokemonPage.propTypes = {
-  pokeman: PropTypes.shape({
-    name: PropTypes.string,
-    image: PropTypes.string,
-    weight: PropTypes.any,
-    height: PropTypes.any,
-    types: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string,
-      }),
-    ),
-  }),
-};
 
 export async function getStaticPaths() {
   return {
@@ -188,18 +178,18 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps(ctx) {
+export const getStaticProps: GetStaticProps = async (ctx) => {
   try {
-    const id = ctx.params.id;
+    const id = ctx.params?.id;
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-    const data = await res.json();
-    const paddedIdx = ('00' + data.id).slice(-3);
+    const data: PokemonApiRespone = await res.json();
+    const paddedIdx = data.id.toString().padStart(3, '0');
     const image = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${paddedIdx}.png`;
     return { props: { pokeman: { ...data, image } } };
   } catch (err) {
     console.error(err);
     return { props: { pokeman: null } };
   }
-}
+};
 
 export default PokemonPage;

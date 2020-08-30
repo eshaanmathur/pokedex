@@ -2,17 +2,21 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Layout from 'components/Layout';
 import PokemanModal from 'components/PokemanModal';
-import PropTypes from 'prop-types';
+import { Pokemon, ApiResponse } from 'types';
 
-function Home({ pokemon }) {
+interface HomeProps {
+  pokemon: Pokemon[];
+}
+
+function Home({ pokemon }: HomeProps) {
   const router = useRouter();
-  const modalOpen = !!router.query.id;
+
   const handelModalClose = () => {
     router.push('/');
   };
   return (
-    <Layout>
-      {modalOpen && <PokemanModal id={router.query.id} handelClose={handelModalClose} />}
+    <Layout title="Home">
+      {!!router.query.id && <PokemanModal id={router.query.id.toString()} handelClose={handelModalClose} />}
       <ul>
         {pokemon.map((pokeman, index) => (
           <li key={index}>
@@ -30,25 +34,16 @@ function Home({ pokemon }) {
   );
 }
 
-Home.propTypes = {
-  pokemon: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      image: PropTypes.image,
-    }),
-  ),
-};
-
-export async function getStaticProps() {
+export async function getStaticProps(): Promise<{ props: HomeProps }> {
   try {
     const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150');
-    const data = await res.json();
+    const data: ApiResponse = await res.json();
 
     const pokemon = data.results.map((result, idx) => {
-      const paddedIdx = ('00' + (1 + idx)).slice(-3);
+      const paddedIdx = (1 + idx).toString().padStart(3, '0');
       const image = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${paddedIdx}.png`;
       return {
-        ...result,
+        name: result.name,
         image,
       };
     });

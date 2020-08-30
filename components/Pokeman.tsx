@@ -1,7 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { PokemonData } from 'types';
 
-function Pokeman({ pokeman }) {
+interface Props {
+  pokeman: PokemonData;
+}
+
+function Pokeman({ pokeman }: Props) {
   return (
     <div className="p-10 bg-gray-100 rounded shadow-md">
       <h1 className="mb-2 text-4xl text-center capitalize">{pokeman.name}</h1>
@@ -27,18 +31,5 @@ function Pokeman({ pokeman }) {
   );
 }
 
-Pokeman.propTypes = {
-  pokeman: PropTypes.shape({
-    name: PropTypes.string,
-    image: PropTypes.string,
-    weight: PropTypes.any,
-    height: PropTypes.any,
-    types: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string,
-      }),
-    ),
-  }),
-};
 
 export default Pokeman;

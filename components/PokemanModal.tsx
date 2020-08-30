@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FC } from 'react';
 import useLockBodyScroll from 'hook/useLockBodyScroll';
 import Loading from 'components/Loading';
 import Pokeman from 'components/Pokeman';
-import PropTypes from 'prop-types';
+import { PokemonData, ORNull } from 'types';
 
-function useFetchPokeman(id) {
+
+function useFetchPokeman<R>(id: string) {
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
+  const [error, setError] = useState<ORNull<any>>(null);
+  const [data, setData] = useState<ORNull<R>>(null);
 
   useEffect(() => {
     (async () => {
       try {
         const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
         const data = await res.json();
-        const paddedIdx = ('00' + id).slice(-3);
+        const paddedIdx = id.padStart(3, '0');
         const image = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${paddedIdx}.png`;
         setData({ ...data, image });
         setLoading(false);
@@ -29,7 +30,7 @@ function useFetchPokeman(id) {
   return { data, error, loading };
 }
 
-function ModalWrapper({ children }) {
+const ModalWrapper: FC = ({ children }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}>
       {children}
@@ -37,19 +38,37 @@ function ModalWrapper({ children }) {
   );
 }
 
-ModalWrapper.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+interface Props {
+  id: string;
+  handelClose: () => void;
+}
 
-function PokemanModal({ id, handelClose }) {
-  const { data, loading } = useFetchPokeman(id);
+const PokemanModal: FC<Props> = ({ id, handelClose }) => {
+  const { data, loading, error } = useFetchPokeman<PokemonData>(id);
+
   useLockBodyScroll();
+
   if (loading) {
     return (
       <ModalWrapper>
         <Loading className="w-20 h-20 text-gray-100 animate-spin" />
       </ModalWrapper>
     );
+  }
+
+  if (data === null || error) {
+    return (
+      <ModalWrapper>
+        <div className="flex flex-col w-full max-w-2xl mx-4 md:w-7/12">
+          <button className="py-4 text-sm font-bold text-gray-100 uppercase" onClick={handelClose}>
+            [x] close
+        </button>
+          <div className="flex items-center justify-center max-w-xl py-20 bg-gray-100">
+            <p>No Data found</p>
+          </div>
+        </div>
+      </ModalWrapper>
+    )
   }
 
   return (
@@ -64,9 +83,5 @@ function PokemanModal({ id, handelClose }) {
   );
 }
 
-PokemanModal.propTypes = {
-  id: PropTypes.any,
-  handelClose: PropTypes.func,
-};
 
 export default PokemanModal;
