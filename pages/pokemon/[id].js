@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import Layout from '../../components/Layout';
-import Pokeman from '../../components/Pokeman';
+import Layout from 'components/Layout';
+import Pokeman from 'components/Pokeman';
+import PropTypes from 'prop-types';
 
-export default function PokemonPage({ pokeman }) {
+function PokemonPage({ pokeman }) {
   return (
     <Layout>
       <Pokeman pokeman={pokeman} />
@@ -14,6 +15,20 @@ export default function PokemonPage({ pokeman }) {
     </Layout>
   );
 }
+
+PokemonPage.propTypes = {
+  pokeman: PropTypes.shape({
+    name: PropTypes.string,
+    image: PropTypes.string,
+    weight: PropTypes.any,
+    height: PropTypes.any,
+    types: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+  }),
+};
 
 export async function getStaticPaths() {
   return {
@@ -186,3 +201,5 @@ export async function getStaticProps(ctx) {
     return { props: { pokeman: null } };
   }
 }
+
+export default PokemonPage;

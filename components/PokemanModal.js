@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import useLockBodyScroll from '../hook/useLockBodyScroll';
-import Loading from './Loading';
-import Pokeman from './Pokeman';
+import useLockBodyScroll from 'hook/useLockBodyScroll';
+import Loading from 'components/Loading';
+import Pokeman from 'components/Pokeman';
+import PropTypes from 'prop-types';
 
 function useFetchPokeman(id) {
   const [loading, setLoading] = useState(true);
@@ -36,7 +37,11 @@ function ModalWrapper({ children }) {
   );
 }
 
-export default function PokemanModal({ id, handelClose }) {
+ModalWrapper.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+function PokemanModal({ id, handelClose }) {
   const { data, loading } = useFetchPokeman(id);
   useLockBodyScroll();
   if (loading) {
@@ -58,3 +63,10 @@ export default function PokemanModal({ id, handelClose }) {
     </ModalWrapper>
   );
 }
+
+PokemanModal.propTypes = {
+  id: PropTypes.any,
+  handelClose: PropTypes.func,
+};
+
+export default PokemanModal;

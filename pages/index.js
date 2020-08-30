@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Layout from '../components/Layout';
-import PokemanModal from '../components/PokemanModal';
+import Layout from 'components/Layout';
+import PokemanModal from 'components/PokemanModal';
+import PropTypes from 'prop-types';
 
-export default function Home({ pokemon }) {
+function Home({ pokemon }) {
   const router = useRouter();
   const modalOpen = !!router.query.id;
   const handelModalClose = () => {
@@ -29,6 +30,15 @@ export default function Home({ pokemon }) {
   );
 }
 
+Home.propTypes = {
+  pokemon: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      image: PropTypes.image,
+    }),
+  ),
+};
+
 export async function getStaticProps() {
   try {
     const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150');
@@ -48,3 +58,5 @@ export async function getStaticProps() {
     return { props: { pokemon: [] } };
   }
 }
+
+export default Home;
