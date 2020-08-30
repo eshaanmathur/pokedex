@@ -4,7 +4,6 @@ import Loading from 'components/Loading';
 import Pokeman from 'components/Pokeman';
 import { PokemonData, ORNull } from 'types';
 
-
 function useFetchPokeman<R>(id: string) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ORNull<any>>(null);
@@ -36,7 +35,7 @@ const ModalWrapper: FC = ({ children }) => {
       {children}
     </div>
   );
-}
+};
 
 interface Props {
   id: string;
@@ -62,13 +61,13 @@ const PokemanModal: FC<Props> = ({ id, handelClose }) => {
         <div className="flex flex-col w-full max-w-2xl mx-4 md:w-7/12">
           <button className="py-4 text-sm font-bold text-gray-100 uppercase" onClick={handelClose}>
             [x] close
-        </button>
+          </button>
           <div className="flex items-center justify-center py-20 bg-gray-100 rounded">
             <p className="font-bold text-gray-700">No Data found</p>
           </div>
         </div>
       </ModalWrapper>
-    )
+    );
   }
 
   return (
@@ -81,7 +80,6 @@ const PokemanModal: FC<Props> = ({ id, handelClose }) => {
       </div>
     </ModalWrapper>
   );
-}
-
+};
 
 export default PokemanModal;
