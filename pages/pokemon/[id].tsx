@@ -3,13 +3,15 @@ import Layout from 'components/Layout';
 import Pokeman from 'components/Pokeman';
 import { GetStaticProps } from 'next';
 import { PokemonApiRespone, PokemonData } from 'types';
+import { capitalize } from 'utils/capitalize';
 
 interface Props {
   pokeman: PokemonData;
 }
+
 function PokemonPage({ pokeman }: Props) {
   return (
-    <Layout title={pokeman.name}>
+    <Layout title={capitalize(pokeman.name)}>
       <Pokeman pokeman={pokeman} />
       <p className="mt-10 text-center">
         <Link href="/">

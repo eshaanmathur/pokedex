@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Layout from 'components/Layout';
 import PokemanModal from 'components/PokemanModal';
 import { Pokemon, ApiResponse } from 'types';
+import { capitalize } from 'utils/capitalize';
 
 interface HomeProps {
   pokemon: Pokemon[];
@@ -10,12 +11,13 @@ interface HomeProps {
 
 function Home({ pokemon }: HomeProps) {
   const router = useRouter();
-
+  const selectedPokemonId = router.query.id?.toString();
+  const pageTitle = selectedPokemonId ? capitalize(pokemon[parseInt(selectedPokemonId) - 1].name) : 'Home';
   const handelModalClose = () => {
     router.push('/');
   };
   return (
-    <Layout title="Home">
+    <Layout title={pageTitle}>
       {!!router.query.id && <PokemanModal id={router.query.id.toString()} handelClose={handelModalClose} />}
       <ul>
         {pokemon.map((pokeman, index) => (
