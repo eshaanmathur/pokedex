@@ -4,6 +4,7 @@ import Layout from 'components/Layout';
 import PokemanModal from 'components/PokemanModal';
 import { Pokemon, ApiResponse } from 'types';
 import { capitalize } from 'utils/capitalize';
+import getImageUrl from 'utils/getImageUrl';
 
 interface HomeProps {
   pokemon: Pokemon[];
@@ -42,8 +43,7 @@ export async function getStaticProps(): Promise<{ props: HomeProps }> {
     const data: ApiResponse = await res.json();
 
     const pokemon = data.results.map((result, idx) => {
-      const paddedIdx = (1 + idx).toString().padStart(3, '0');
-      const image = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${paddedIdx}.png`;
+      const image = getImageUrl(idx + 1);
       return {
         name: result.name,
         image,

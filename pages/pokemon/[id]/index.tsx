@@ -4,6 +4,7 @@ import Pokeman from 'components/Pokeman';
 import { GetStaticProps } from 'next';
 import { PokemonApiRespone, PokemonData } from 'types';
 import { capitalize } from 'utils/capitalize';
+import getImageUrl from 'utils/getImageUrl';
 
 interface Props {
   pokeman: PokemonData;
@@ -185,8 +186,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     const id = ctx.params?.id;
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
     const data: PokemonApiRespone = await res.json();
-    const paddedIdx = data.id.toString().padStart(3, '0');
-    const image = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${paddedIdx}.png`;
+    const image = getImageUrl(data.id);
     return { props: { pokeman: { ...data, image } } };
   } catch (err) {
     console.error(err);
